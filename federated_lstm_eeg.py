@@ -14,13 +14,15 @@ from imblearn.over_sampling import SMOTE
 from torch.utils.data import DataLoader, TensorDataset  # Import DataLoader
 
 # Define the fixed input path to your dataset folder
-input_path = "/Users/gabrielnguyen/Study/AUT-Semester3/Dataset_Original"
+input_path = "Dataset_Original"
 
 # Initialize lists to hold the samples and their corresponding labels
 samples = []
 labels = []
-writer = SummaryWriter('runs/eeg_experiment')
-
+log_dir = '/content/drive/My Drive/eeg_logs'
+writer = SummaryWriter(log_dir)
+# Ensure the directory exists
+os.makedirs(log_dir, exist_ok=True)
 # Load EEG data from CSV files
 for i in range(1, 89):  # Assuming files are named 001.csv to 088.csv
     file_path = os.path.join(input_path, f"{i:03}.csv")
@@ -207,7 +209,7 @@ eval_dataset = TensorDataset(X_eval, y_eval)
 eval_loader = DataLoader(eval_dataset, batch_size=64, shuffle=False)
 
 # Training loop with TensorBoard logging
-num_epochs = 1 # Number of epochs for training
+num_epochs = 3 # Number of epochs for training
 for epoch in range(num_epochs):
     model.train()  # Set the model to training mode
     running_loss = 0.0
